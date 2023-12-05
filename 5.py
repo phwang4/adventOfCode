@@ -17,20 +17,21 @@ def parse_almanac():
 
 def get_destinations(seeds, maps, key):
     destinations = []
-    for seed in seeds:
+    for start_seed,end_seed in seeds:
         for destination, source, range in maps[key]:
-            if (source < seed < (source + range)):
-                destinations.append(destination + seed - source)
-                print(f'found mapping for {seed=} {source=}')
+            if (source < start_seed < (source + range)):
+                destinations.append([destination + start_seed - source, end_seed])
+                print(f'found mapping for {start_seed=} {source=}')
                 break
     return destinations
 
 def get_all_seeds(seeds):
+    seed_pairs = []
     for x in range(0, len(seeds), 2):
         start = seeds[x]
-        end = start + seeds[x+1]
-        print(start, end)
-    return seeds
+        length = seeds[x+1]
+        seed_pairs.append([start, length])
+    return seed_pairs
 
 seeds, maps = parse_almanac()
 sources = get_all_seeds(seeds)
